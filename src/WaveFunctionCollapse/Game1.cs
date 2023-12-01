@@ -8,6 +8,8 @@ public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
+    private Tiles _tiles;
+    private Tiles _tiles2;
 
     public Game1()
     {
@@ -18,8 +20,6 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        // TODO: Add your initialization logic here
-
         base.Initialize();
     }
 
@@ -27,7 +27,8 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        // TODO: use this.Content to load your game content here
+        _tiles = new Tiles(Content.Load<Texture2D>("pacman_tiles"), 24, 24, 1, 1);
+        _tiles2 = new Tiles(Content.Load<Texture2D>("pacman_sample_screen"), 8, 8, 1, 1);
     }
 
     protected override void Update(GameTime gameTime)
@@ -45,6 +46,14 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         // TODO: Add your drawing code here
+        _spriteBatch.Begin();
+        
+        _tiles2.Draw(_spriteBatch, new Rectangle(0, 0, 0, 0));
+        
+        _tiles.Draw(_spriteBatch, new Rectangle(0, 300, 0, 0));
+
+
+        _spriteBatch.End();
 
         base.Draw(gameTime);
     }
