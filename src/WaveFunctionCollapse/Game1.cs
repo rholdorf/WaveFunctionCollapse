@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using WaveFunctionCollapse.Tiles;
 
 namespace WaveFunctionCollapse;
 
@@ -8,8 +9,8 @@ public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-    private Tiles _tiles;
-    private Tiles _tiles2;
+    private TileMaker _tileMaker;
+    private TileMaker _tiles2;
 
     public Game1()
     {
@@ -28,7 +29,7 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         //_tiles = new Tiles(Content.Load<Texture2D>("pacman_tiles"), 24, 24, 1, 1);
-        _tiles2 = new Tiles(Content.Load<Texture2D>("pacman_sample_screen"), 8, 8);
+        _tiles2 = new TileMaker(Content.Load<Texture2D>("pacman_sample_screen"), 8, 8);
     }
 
     protected override void Update(GameTime gameTime)
