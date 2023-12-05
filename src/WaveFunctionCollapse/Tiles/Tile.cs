@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
@@ -6,34 +7,57 @@ namespace WaveFunctionCollapse.Tiles;
 public class Tile
 {
     public Rectangle SourceRectangle { get;}
+    public string Name { get; set; }
+    public int Index { get; }
 
-    public Tile(Rectangle sourceRectangle, IReadOnlyList<Color> tileData)
+    public Tile(Rectangle sourceRectangle, IReadOnlyList<Color> tileData, int index)
     {
         SourceRectangle = sourceRectangle;
+        Index = index;
         
-        TopEdgeColors = new Color[sourceRectangle.Width];
+        TopEdge = new Color[sourceRectangle.Width];
         for(var i=0; i< sourceRectangle.Width; i++)
-            TopEdgeColors[i] = tileData[i];
+            TopEdge[i] = tileData[i];
         
-        BottomEdgeColors = new Color[sourceRectangle.Width];
+        BottomEdge = new Color[sourceRectangle.Width];
         for(var i=0; i< sourceRectangle.Width; i++)
-            BottomEdgeColors[i] = tileData[(sourceRectangle.Height - 1) * sourceRectangle.Width + i];
+            BottomEdge[i] = tileData[(sourceRectangle.Height - 1) * sourceRectangle.Width + i];
         
-        RightEdgeColors = new Color[sourceRectangle.Height];
+        RightEdge = new Color[sourceRectangle.Height];
         for(var i=0; i< sourceRectangle.Height; i++)
-            RightEdgeColors[i] = tileData[i * sourceRectangle.Width + sourceRectangle.Width - 1];
+            RightEdge[i] = tileData[i * sourceRectangle.Width + sourceRectangle.Width - 1];
         
-        LeftEdgeColors = new Color[sourceRectangle.Height];
+        LeftEdge = new Color[sourceRectangle.Height];
         for(var i=0; i< sourceRectangle.Height; i++)
-            LeftEdgeColors[i] = tileData[i * sourceRectangle.Width];
+            LeftEdge[i] = tileData[i * sourceRectangle.Width];
     }
 
-    public Color[] TopEdgeColors { get;}
-    public Color[] RightEdgeColors { get; }
-    public Color[] BottomEdgeColors { get;}
-    public Color[] LeftEdgeColors { get;}
-    public List<Tile> TopEdgeValidConnections { get; set; } = new();
-    public List<Tile> RightEdgeValidConnections { get; set; } = new();
-    public List<Tile> BottomEdgeValidConnections { get; set; } = new();
-    public List<Tile> LeftEdgeValidConnections { get; set; } = new();
+    public Color[] TopEdge { get;}
+    public Color[] RightEdge { get; }
+    public Color[] BottomEdge { get;}
+    public Color[] LeftEdge { get;}
+    public List<Tile> TopEdgeConnections { get; } = new();
+    public List<Tile> RightEdgeConnections { get; } = new();
+    public List<Tile> BottomEdgeConnections { get; } = new();
+    public List<Tile> LeftEdgeConnections { get; } = new();
+    
+    public Tile PickRandomTopEdgeConnection(Random random)
+    {
+        return TopEdgeConnections[random.Next(TopEdgeConnections.Count)];
+    }
+    
+    public Tile PickRandomLeftEdgeConnection(Random random)
+    {
+        return LeftEdgeConnections[random.Next(LeftEdgeConnections.Count)];
+    }    
+    
+    public Tile PickRandomRightEdgeConnection(Random random)
+    {
+        return RightEdgeConnections[random.Next(RightEdgeConnections.Count)];
+    }
+    
+    public Tile PickRandomBottomEdgeConnection(Random random)
+    {
+        return BottomEdgeConnections[random.Next(BottomEdgeConnections.Count)];
+    }
 }

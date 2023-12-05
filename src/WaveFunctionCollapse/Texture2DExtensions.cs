@@ -40,8 +40,9 @@ public static class Texture2DExtensions
             if (existsAtPosition == -1)
             {
                 uniqueTilesColorData.Add(currentTileColorData);
-                uniqueTiles.Add(new Tile(rectangle, currentTileColorData));
-                fullTileSetIndexes[i] = uniqueTilesColorData.Count - 1;
+                var index = uniqueTilesColorData.Count -1;
+                uniqueTiles.Add(new Tile(rectangle, currentTileColorData, index));
+                fullTileSetIndexes[i] = index;
             }
             else
             {

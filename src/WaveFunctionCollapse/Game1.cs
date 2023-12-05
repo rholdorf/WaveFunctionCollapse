@@ -9,8 +9,7 @@ public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-    private TileMaker _tileMaker;
-    private TileMaker _tiles2;
+    private TileMaker _tiles;
 
     public Game1()
     {
@@ -19,17 +18,10 @@ public class Game1 : Game
         IsMouseVisible = true;
     }
 
-    protected override void Initialize()
-    {
-        base.Initialize();
-    }
-
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-        //_tiles = new Tiles(Content.Load<Texture2D>("pacman_tiles"), 24, 24, 1, 1);
-        _tiles2 = new TileMaker(Content.Load<Texture2D>("pacman_sample_screen"), 8, 8);
+        _tiles = new TileMaker(Content.Load<Texture2D>("pacman_sample_screen"), 8, 8);
     }
 
     protected override void Update(GameTime gameTime)
@@ -37,25 +29,15 @@ public class Game1 : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        // TODO: Add your update logic here
-
         base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
-
-        // TODO: Add your drawing code here
         _spriteBatch.Begin();
-        
-        _tiles2.Draw(_spriteBatch, new Rectangle(1, 1, 0, 0));
-        
-        //_tiles.Draw(_spriteBatch, new Rectangle(0, 300, 0, 0));
-
-
+        _tiles.Draw(_spriteBatch, new Rectangle(1, 1, 0, 0));
         _spriteBatch.End();
-
         base.Draw(gameTime);
     }
 }
