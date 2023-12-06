@@ -7,7 +7,7 @@ namespace WaveFunctionCollapse.Tiles;
 public class Tile
 {
     public Rectangle SourceRectangle { get;}
-    public string Name { get; set; }
+
     public int Index { get; }
 
     public Tile(Rectangle sourceRectangle, IReadOnlyList<Color> tileData, int index)
@@ -36,27 +36,27 @@ public class Tile
     public Color[] RightEdge { get; }
     public Color[] BottomEdge { get;}
     public Color[] LeftEdge { get;}
-    public List<Tile> TopEdgeConnections { get; } = new();
-    public List<Tile> RightEdgeConnections { get; } = new();
-    public List<Tile> BottomEdgeConnections { get; } = new();
-    public List<Tile> LeftEdgeConnections { get; } = new();
+    public List<int> TopEdgeConnections { get; } = new();
+    public List<int> RightEdgeConnections { get; } = new();
+    public List<int> BottomEdgeConnections { get; } = new();
+    public List<int> LeftEdgeConnections { get; } = new();
     
-    public Tile PickRandomTopEdgeConnection(Random random)
+    public int PickRandomTopEdgeConnection(Random random)
     {
         return TopEdgeConnections[random.Next(TopEdgeConnections.Count)];
     }
     
-    public Tile PickRandomLeftEdgeConnection(Random random)
+    public int PickRandomLeftEdgeConnection(Random random)
     {
         return LeftEdgeConnections[random.Next(LeftEdgeConnections.Count)];
     }    
     
-    public Tile PickRandomRightEdgeConnection(Random random)
+    public int PickRandomRightEdgeConnection(Random random)
     {
         return RightEdgeConnections[random.Next(RightEdgeConnections.Count)];
     }
     
-    public Tile PickRandomBottomEdgeConnection(Random random)
+    public int PickRandomBottomEdgeConnection(Random random)
     {
         return BottomEdgeConnections[random.Next(BottomEdgeConnections.Count)];
     }

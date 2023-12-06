@@ -25,7 +25,7 @@ public class TileMaker
         
         (_uniqueTiles, _tileMap) = texture.FindUniqueTiles(_allRectanglesInTileSet);
         _uniqueTiles.FindValidConnections();
-        Collapse();
+        HalfBakedCollapse();
     }
     
     public void Draw(SpriteBatch spriteBatch, Rectangle destinationRectangle)
@@ -49,7 +49,7 @@ public class TileMaker
         }
     }
     
-    public void DrawFullTileSet(SpriteBatch spriteBatch, Rectangle destinationRectangle)
+    public void DrawTileSet(SpriteBatch spriteBatch, Rectangle destinationRectangle)
     {
         for (var i = 0; i < _allRectanglesInTileSet.Length; i++)
         {
@@ -68,7 +68,7 @@ public class TileMaker
         }
     }
 
-    private void Collapse()
+    private void HalfBakedCollapse()
     {
         var bidimensionalArray = new int[_widthInCells, _heightInCells];
         bidimensionalArray.Fill(-1);
@@ -110,19 +110,19 @@ public class TileMaker
         var currentTile = _uniqueTiles[index];
         if (canConnectTop && currentTile.TopEdgeConnections.Any())
         {
-            bidimensionalArray[x, y - 1] = currentTile.PickRandomTopEdgeConnection(random).Index;
+            bidimensionalArray[x, y - 1] = currentTile.PickRandomTopEdgeConnection(random);
         }
         if (canConnectRight && currentTile.RightEdgeConnections.Any())
         {
-            bidimensionalArray[x + 1, y] = currentTile.PickRandomRightEdgeConnection(random).Index;
+            bidimensionalArray[x + 1, y] = currentTile.PickRandomRightEdgeConnection(random);
         }
         if (canConnectBottom && currentTile.BottomEdgeConnections.Any())
         {
-            bidimensionalArray[x, y + 1] = currentTile.PickRandomBottomEdgeConnection(random).Index;
+            bidimensionalArray[x, y + 1] = currentTile.PickRandomBottomEdgeConnection(random);
         }
         if (canConnectLeft && currentTile.LeftEdgeConnections.Any())
         {
-            bidimensionalArray[x - 1, y] = currentTile.PickRandomLeftEdgeConnection(random).Index;
+            bidimensionalArray[x - 1, y] = currentTile.PickRandomLeftEdgeConnection(random);
         }        
     }
 }
