@@ -8,12 +8,13 @@ namespace WaveFunctionCollapse.Tiles;
 public class TileMaker
 {
     private readonly Rectangle[] _allRectanglesInTileSet;
-    private readonly int[] _tileMap;
+    //private readonly int[] _tileMap;
     private readonly int _max;
     private readonly Texture2D _texture;
     private readonly Tile[] _uniqueTiles;
     private readonly int _widthInCells;
     private readonly int _heightInCells;
+    private readonly CellMap _cellMap;
     
     public TileMaker(Texture2D texture, int tileWidth, int tileHeight)
     {
@@ -23,30 +24,39 @@ public class TileMaker
         _widthInCells = _texture.Width / tileWidth;
         _heightInCells = _texture.Height / tileHeight;
         
-        (_uniqueTiles, _tileMap) = texture.FindUniqueTiles(_allRectanglesInTileSet);
+        (_uniqueTiles, _cellMap) = texture.FindUniqueTiles(_allRectanglesInTileSet, _widthInCells, _heightInCells);
+        //_cellMap = new CellMap(_widthInCells, _heightInCells, _tileMap);
         _uniqueTiles.FindValidConnections();
         HalfBakedCollapse();
     }
     
     public void Draw(SpriteBatch spriteBatch, Rectangle destinationRectangle)
     {
-        for (var i = 0; i < _tileMap.Length; i++)
+        for (var y = 0; y < _cellMap.Height; y++)
         {
-            var index = _tileMap[i];
-            var sourceRectangle = _allRectanglesInTileSet[index];
-            destinationRectangle.Height = sourceRectangle.Height;
-            destinationRectangle.Width = sourceRectangle.Width;
-        
-            spriteBatch.Draw(_texture, destinationRectangle, _uniqueTiles[index].SourceRectangle, Color.White);
-            
-            // move to next tile position
-            destinationRectangle.X += sourceRectangle.Width;
-            if (destinationRectangle.X >= _max)
+            for (var x = 0; x < _cellMap.Width; x++)
             {
-                destinationRectangle.X = 0;
-                destinationRectangle.Y += sourceRectangle.Height;
+                var index = _cellMap.Cells[x][y];
+                var sourceRectangle = _allRectanglesInTileSet[index];
+                destinationRectangle.Height = sourceRectangle.Height;
+                destinationRectangle.Width = sourceRectangle.Width;
+        
+                spriteBatch.Draw(_texture, destinationRectangle, _uniqueTiles[index].SourceRectangle, Color.White);
+            
+                // move to next tile position
+                destinationRectangle.X += sourceRectangle.Width;
+                if (destinationRectangle.X >= _max)
+                {
+                    destinationRectangle.X = 0;
+                    destinationRectangle.Y += sourceRectangle.Height;
+                }                
             }
         }
+
+        
+        
+
+        
     }
     
     public void DrawTileSet(SpriteBatch spriteBatch, Rectangle destinationRectangle)
@@ -85,13 +95,11 @@ public class TileMaker
         }
 
         // transpose bidimensional array into linear array
-        var count = 0;
         for (var y = 0; y < _heightInCells; y++)
         {
             for (var x = 0; x < _widthInCells; x++)
             {
-                _tileMap[count] = bidimensionalArray[x, y];
-                count++;
+                _cellMap.Cells[x][y] = bidimensionalArray[x, y];
             }
         }
     }

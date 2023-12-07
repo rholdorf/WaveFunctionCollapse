@@ -22,7 +22,7 @@ public static class TileCollectionExtensions
             }
         }
     }
-
+    
     public static void Fill(this int[,] array, int value)
     {
         for (var i = 0; i < array.GetLength(0); i++)

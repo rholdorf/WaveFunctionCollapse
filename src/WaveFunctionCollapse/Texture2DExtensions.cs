@@ -26,11 +26,13 @@ public static class Texture2DExtensions
         return ret;
     }    
     
-    public static (Tile[], int[]) FindUniqueTiles(this Texture2D texture, Rectangle[] tileMap)
+    public static (Tile[], CellMap) FindUniqueTiles(this Texture2D texture, Rectangle[] tileMap, int widthInCells, int heightInCells)
     {
         var uniqueTiles = new List<Tile>();
-        var fullTileSetIndexes = new int[tileMap.Length]; 
+        var cellMap = new CellMap(widthInCells, heightInCells); 
         var uniqueTilesColorData = new List<Color[]>();
+        var x = 0;
+        var y = 0;
         for (var i = 0; i < tileMap.Length; i++)
         {
             var rectangle = tileMap[i];
@@ -40,19 +42,27 @@ public static class Texture2DExtensions
             if (existsAtPosition == -1)
             {
                 uniqueTilesColorData.Add(currentTileColorData);
-                var index = uniqueTilesColorData.Count -1;
+                var index = uniqueTilesColorData.Count - 1;
                 uniqueTiles.Add(new Tile(rectangle, currentTileColorData, index));
-                fullTileSetIndexes[i] = index;
+                cellMap.Cells[x][y] = index;
             }
             else
             {
-                fullTileSetIndexes[i] = existsAtPosition;
+                cellMap.Cells[x][y] = existsAtPosition;
             }
+
+            x++;
+            if (x >= widthInCells)
+            {
+                x = 0;
+                y++;
+            }
+
         }
-        
+
         Console.WriteLine($"{texture.Name} unique tiles: {uniqueTilesColorData.Count}");
-        return (uniqueTiles.ToArray(), fullTileSetIndexes);
-    }    
+        return (uniqueTiles.ToArray(), cellMap);
+    }
     
     private static int Find(IReadOnlyList<Color> tileData, IReadOnlyList<Color[]> uniqueTiles)
     {
