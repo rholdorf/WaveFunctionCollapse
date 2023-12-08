@@ -11,7 +11,7 @@ public class TileMaker
     private readonly Texture2D _texture;
     private readonly Tile[] _uniqueTiles;
     private readonly CellCollection _cellMap2;
-    private readonly Random _random = new Random(1);
+    private readonly Random _random = new Random(2);
     
     public TileMaker(Texture2D texture, int tileWidth, int tileHeight)
     {
@@ -21,7 +21,6 @@ public class TileMaker
         _rectanglesMap = texture.MapRectangles(tileWidth, tileHeight);
         
         (_uniqueTiles, _cellMap2) = texture.FindUniqueTiles(_rectanglesMap, widthInCells, heightInCells);
-        //_uniqueTiles.FindValidConnections();
         Learn();
         Collapse();
     }
@@ -55,22 +54,22 @@ public class TileMaker
 
                 if(cell.CanConnectTop)
                 {
-                    var topIndex = _cellMap2.Cells[x][y - 1].Index;
+                    var topIndex = cell.TopCell.Index;
                     _uniqueTiles[cell.Index].TopEdgeConnections.Add(topIndex);
                 }
                 if(cell.CanConnectRight)
                 {
-                    var rightIndex = _cellMap2.Cells[x + 1][y].Index;
+                    var rightIndex = cell.RightCell.Index;
                     _uniqueTiles[cell.Index].RightEdgeConnections.Add(rightIndex);
                 }
                 if(cell.CanConnectBottom)
                 {
-                    var bottomIndex = _cellMap2.Cells[x][y + 1].Index;
+                    var bottomIndex = cell.BottomCell.Index;
                     _uniqueTiles[cell.Index].BottomEdgeConnections.Add(bottomIndex);
                 }
                 if(cell.CanConnectLeft)
                 {
-                    var leftIndex = _cellMap2.Cells[x - 1][y].Index;
+                    var leftIndex = cell.LeftCell.Index;
                     _uniqueTiles[cell.Index].LeftEdgeConnections.Add(leftIndex);
                 }
             }
@@ -128,8 +127,4 @@ public class TileMaker
             }
         }
     }
-    
-    
-   
-
 }

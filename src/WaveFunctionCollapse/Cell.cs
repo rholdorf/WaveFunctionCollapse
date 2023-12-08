@@ -17,10 +17,10 @@ public class Cell
         Index = index;
     }
     
-    public bool CanConnectTop { get; set; }
-    public bool CanConnectRight { get; set; }
-    public bool CanConnectBottom { get; set; }
-    public bool CanConnectLeft { get; set; }
+    public bool CanConnectTop { get; init; }
+    public bool CanConnectRight { get; init; }
+    public bool CanConnectBottom { get; init; }
+    public bool CanConnectLeft { get; init; }
     
     public CellCollection CellCollection { get; init; }
     
