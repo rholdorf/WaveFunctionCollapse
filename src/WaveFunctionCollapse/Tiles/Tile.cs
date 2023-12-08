@@ -46,6 +46,26 @@ public class Tile
         return TopEdgeConnections[random.Next(TopEdgeConnections.Count)];
     }
     
+    public bool HasTopEdgeConnection()
+    {
+        return TopEdgeConnections.Count > 0;
+    }
+    
+    public bool HasRightEdgeConnection()
+    {
+        return RightEdgeConnections.Count > 0;
+    }
+    
+    public bool HasBottomEdgeConnection()
+    {
+        return BottomEdgeConnections.Count > 0;
+    }
+    
+    public bool HasLeftEdgeConnection()
+    {
+        return LeftEdgeConnections.Count > 0;
+    }
+    
     public int PickRandomLeftEdgeConnection(Random random)
     {
         return LeftEdgeConnections[random.Next(LeftEdgeConnections.Count)];

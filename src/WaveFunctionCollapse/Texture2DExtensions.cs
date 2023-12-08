@@ -8,7 +8,7 @@ namespace WaveFunctionCollapse;
 
 public static class Texture2DExtensions
 {
-    public static Rectangle[][] SplitTileSetInTileRectangles(this Texture2D texture, int tileWidth, int tileHeight)
+    public static Rectangle[][] MapRectangles(this Texture2D texture, int tileWidth, int tileHeight)
     {
         var width = texture.Width / tileWidth;
         var height = texture.Height / tileHeight;
@@ -29,12 +29,11 @@ public static class Texture2DExtensions
         return ret;
     }    
     
-    public static (Tile[], CellMap) FindUniqueTiles(this Texture2D texture, Rectangle[][] tileMap, int widthInCells, int heightInCells)
+    public static (Tile[], CellCollection) FindUniqueTiles(this Texture2D texture, Rectangle[][] tileMap, int widthInCells, int heightInCells)
     {
         var uniqueTiles = new List<Tile>();
-        var cellMap = new CellMap(widthInCells, heightInCells); 
+        var cellMap = new CellCollection(widthInCells, heightInCells);
         var uniqueTilesColorData = new List<Color[]>();
-
 
         for (var y = 0; y < heightInCells; y++)
         {
@@ -49,11 +48,11 @@ public static class Texture2DExtensions
                     uniqueTilesColorData.Add(currentTileColorData);
                     var index = uniqueTilesColorData.Count - 1;
                     uniqueTiles.Add(new Tile(rectangle, currentTileColorData, index));
-                    cellMap.Cells[x][y] = index;
+                    cellMap.Cells[x][y].Index = index;
                 }
                 else
                 {
-                    cellMap.Cells[x][y] = existsAtPosition;
+                    cellMap.Cells[x][y].Index = existsAtPosition;
                 }                
             }
         }
