@@ -8,56 +8,54 @@ namespace WaveFunctionCollapse;
 
 public static class Texture2DExtensions
 {
-    public static Rectangle[] SplitTileSetInTileRectangles(this Texture2D texture, int tileWidth, int tileHeight)
+    public static Rectangle[][] SplitTileSetInTileRectangles(this Texture2D texture, int tileWidth, int tileHeight)
     {
-        var tileCount = (texture.Width / tileWidth) * (texture.Height / tileHeight);
-        var ret = new Rectangle[tileCount];
-        var count = 0;
-
-        for (var y = 0; y < texture.Height; y += tileHeight)
+        var width = texture.Width / tileWidth;
+        var height = texture.Height / tileHeight;
+        var ret = new Rectangle[width][];
+        for (var i = 0; i < width; i++)
         {
-            for (var x = 0; x < texture.Width; x += tileWidth)
+            ret[i] = new Rectangle[height];
+        }
+
+        for (var y = 0; y < height; y++)
+        {
+            for (var x = 0; x < width; x++)
             {
-                ret[count] = new Rectangle(x, y, tileWidth, tileHeight);
-                count++;
+                ret[x][y] = new Rectangle(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
             }
         }
 
         return ret;
     }    
     
-    public static (Tile[], CellMap) FindUniqueTiles(this Texture2D texture, Rectangle[] tileMap, int widthInCells, int heightInCells)
+    public static (Tile[], CellMap) FindUniqueTiles(this Texture2D texture, Rectangle[][] tileMap, int widthInCells, int heightInCells)
     {
         var uniqueTiles = new List<Tile>();
         var cellMap = new CellMap(widthInCells, heightInCells); 
         var uniqueTilesColorData = new List<Color[]>();
-        var x = 0;
-        var y = 0;
-        for (var i = 0; i < tileMap.Length; i++)
+
+
+        for (var y = 0; y < heightInCells; y++)
         {
-            var rectangle = tileMap[i];
-            var currentTileColorData = new Color[rectangle.Width * rectangle.Height];
-            texture.GetData(0, rectangle, currentTileColorData, 0, currentTileColorData.Length);
-            var existsAtPosition = Find(currentTileColorData, uniqueTilesColorData);
-            if (existsAtPosition == -1)
+            for (var x = 0; x < widthInCells; x++)
             {
-                uniqueTilesColorData.Add(currentTileColorData);
-                var index = uniqueTilesColorData.Count - 1;
-                uniqueTiles.Add(new Tile(rectangle, currentTileColorData, index));
-                cellMap.Cells[x][y] = index;
+                var rectangle = tileMap[x][y];
+                var currentTileColorData = new Color[rectangle.Width * rectangle.Height];
+                texture.GetData(0, rectangle, currentTileColorData, 0, currentTileColorData.Length);
+                var existsAtPosition = Find(currentTileColorData, uniqueTilesColorData);
+                if (existsAtPosition == -1)
+                {
+                    uniqueTilesColorData.Add(currentTileColorData);
+                    var index = uniqueTilesColorData.Count - 1;
+                    uniqueTiles.Add(new Tile(rectangle, currentTileColorData, index));
+                    cellMap.Cells[x][y] = index;
+                }
+                else
+                {
+                    cellMap.Cells[x][y] = existsAtPosition;
+                }                
             }
-            else
-            {
-                cellMap.Cells[x][y] = existsAtPosition;
-            }
-
-            x++;
-            if (x >= widthInCells)
-            {
-                x = 0;
-                y++;
-            }
-
         }
 
         Console.WriteLine($"{texture.Name} unique tiles: {uniqueTilesColorData.Count}");

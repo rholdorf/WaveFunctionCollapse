@@ -17,10 +17,5 @@ public class CellMap
         {
             Cells[i] = new int[height];
         }
-
-
     }
-
-    
-    
 }
