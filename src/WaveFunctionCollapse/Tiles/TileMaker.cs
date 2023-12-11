@@ -78,53 +78,9 @@ public class TileMaker
     
     private void Collapse()
     {
-        for (var y = 0; y < _cellMap2.Height; y++)
-        {
-            for (var x = 0; x < _cellMap2.Width; x++)
-            {
-                var cell = _cellMap2.Cells[x][y];
-
-                if(cell.CanConnectTop && _uniqueTiles[cell.Index].HasTopEdgeConnection())
-                {
-                    var topCell = cell.TopCell;
-                    if (!topCell.Collapsed)
-                    {
-                        var topIndex = _uniqueTiles[cell.Index].PickRandomTopEdgeConnection(_random);
-                        topCell.Index = topIndex;
-                        topCell.Collapsed = true;
-                    }
-                }
-                if(cell.CanConnectRight && _uniqueTiles[cell.Index].HasRightEdgeConnection())
-                {
-                    var rightCell = cell.RightCell;
-                    if (!rightCell.Collapsed)
-                    {
-                        var rightIndex = _uniqueTiles[cell.Index].PickRandomRightEdgeConnection(_random);
-                        rightCell.Index = rightIndex;
-                        rightCell.Collapsed = true;
-                    }
-                }
-                if(cell.CanConnectBottom && _uniqueTiles[cell.Index].HasBottomEdgeConnection())
-                {
-                    var bottomCell = cell.BottomCell;
-                    if (!bottomCell.Collapsed)
-                    {
-                        var bottomIndex = _uniqueTiles[cell.Index].PickRandomBottomEdgeConnection(_random);
-                        bottomCell.Index = bottomIndex;
-                        bottomCell.Collapsed = true;
-                    }
-                }
-                if(cell.CanConnectLeft && _uniqueTiles[cell.Index].HasLeftEdgeConnection())
-                {
-                    var leftCell = cell.LeftCell;
-                    if (!leftCell.Collapsed)
-                    {
-                        var leftIndex = _uniqueTiles[cell.Index].PickRandomLeftEdgeConnection(_random);
-                        leftCell.Index = leftIndex;
-                        leftCell.Collapsed = true;
-                    }
-                }
-            }
-        }
+        var x = _random.Next(_cellMap2.Width);
+        var y = _random.Next(_cellMap2.Height);
+        FloodFill floodFill = new(_cellMap2, _uniqueTiles, _random);
+        floodFill.Fill(x, y);
     }
 }

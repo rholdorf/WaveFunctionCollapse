@@ -47,7 +47,7 @@ public static class Texture2DExtensions
                 {
                     uniqueTilesColorData.Add(currentTileColorData);
                     var index = uniqueTilesColorData.Count - 1;
-                    uniqueTiles.Add(new Tile(rectangle, currentTileColorData, index));
+                    uniqueTiles.Add(new Tile(rectangle, index));
                     cellMap.Cells[x][y].Index = index;
                 }
                 else
@@ -57,8 +57,10 @@ public static class Texture2DExtensions
             }
         }
 
-        Console.WriteLine($"{texture.Name} unique tiles: {uniqueTilesColorData.Count}");
-        return (uniqueTiles.ToArray(), cellMap);
+        var ret = uniqueTiles.ToArray();
+        cellMap.SetUniqueTiles(ret);
+        Console.WriteLine($"{texture.Name} unique tiles: {ret.Length}");
+        return (ret, cellMap);
     }
     
     private static int Find(IReadOnlyList<Color> tileData, IReadOnlyList<Color[]> uniqueTiles)
