@@ -27,6 +27,12 @@ public class TileMaker
     
     public void Draw(SpriteBatch spriteBatch, Rectangle destinationRectangle)
     {
+        DrawCellMap(spriteBatch, destinationRectangle);
+        //DrawLearned(spriteBatch, destinationRectangle);
+    }
+
+    private void DrawCellMap(SpriteBatch spriteBatch, Rectangle destinationRectangle)
+    {
         var offsetRectangle = new Rectangle(0, 0, 0, 0);
         for (var y = 0; y < _cellMap2.Height; y++)
         {
@@ -41,9 +47,65 @@ public class TileMaker
         
                 spriteBatch.Draw(_texture, offsetRectangle, _uniqueTiles[index].SourceRectangle, Color.White);
             }
+        }        
+    }
+
+    private void DrawLearned(SpriteBatch spriteBatch, Rectangle destinationRectangle)
+    {
+        var cellWidth = _rectanglesMap[0][0].Width;
+        var cellHeight = _rectanglesMap[0][0].Height;
+        
+        var offsetRectangle = new Rectangle(0, 0, cellWidth, cellHeight);
+        var offsetX = 4;
+        var offsetY = 4;
+        offsetRectangle.X += destinationRectangle.X;
+        offsetRectangle.Y += destinationRectangle.Y;
+
+        for (var i = 0; i < _uniqueTiles.Length; i++)
+        {
+            var tile = _uniqueTiles[i];
+            var middleTopRect = new Rectangle(offsetRectangle.X + cellWidth, offsetRectangle.Y, cellWidth, cellHeight);
+            var leftMiddleRect = new Rectangle(offsetRectangle.X, offsetRectangle.Y + cellHeight, cellWidth, cellHeight);
+            var middleMiddleRect = new Rectangle(offsetRectangle.X + cellWidth, offsetRectangle.Y + cellHeight, cellWidth, cellHeight);
+            var rightMiddleRect = new Rectangle(offsetRectangle.X + cellHeight + cellWidth, offsetRectangle.Y + cellHeight, cellWidth, cellHeight);
+            var middleBottomRect = new Rectangle(offsetRectangle.X + cellWidth, offsetRectangle.Y + cellHeight + cellHeight, cellWidth, cellHeight);
+
+            if (tile.HasTopEdgeConnection)
+            {
+                var topTile = _uniqueTiles[tile.TopEdgeConnections.First()];
+                spriteBatch.Draw(_texture, middleTopRect, topTile.SourceRectangle, Color.White);
+            }
+
+            if (tile.HasLeftEdgeConnection)
+            {
+                var leftTile = _uniqueTiles[tile.LeftEdgeConnections.First()];
+                spriteBatch.Draw(_texture, leftMiddleRect, leftTile.SourceRectangle, Color.White);
+            }
+
+            spriteBatch.Draw(_texture, middleMiddleRect, tile.SourceRectangle, Color.White);
+
+            if (tile.HasRightEdgeConnection)
+            {
+                var rightTile = _uniqueTiles[tile.RightEdgeConnections.First()];
+                spriteBatch.Draw(_texture, rightMiddleRect, rightTile.SourceRectangle, Color.White);
+            }
+
+            if (tile.HasBottomEdgeConnection)
+            {
+                var bottomTile = _uniqueTiles[tile.BottomEdgeConnections.First()];
+                spriteBatch.Draw(_texture, middleBottomRect, bottomTile.SourceRectangle, Color.White);
+            }
+
+            // move to next position
+            offsetRectangle.X += cellWidth * 3 + offsetX; 
+            if (offsetRectangle.X > _texture.Width)
+            {
+                offsetRectangle.Y += (cellHeight * 3) + offsetY;
+                offsetRectangle.X = destinationRectangle.X;
+            }
         }
     }
-    
+
     private void Learn()
     {
         for (var y = 0; y < _cellMap2.Height; y++)   

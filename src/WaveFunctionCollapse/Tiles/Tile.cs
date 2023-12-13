@@ -5,7 +5,7 @@ namespace WaveFunctionCollapse.Tiles;
 
 public class Tile
 {
-    public Rectangle SourceRectangle { get;}
+    public Rectangle SourceRectangle { get; }
 
     public int Index { get; }
 
@@ -20,23 +20,11 @@ public class Tile
     public List<int> BottomEdgeConnections { get; } = new();
     public List<int> LeftEdgeConnections { get; } = new();
 
-    public bool HasTopEdgeConnection()
-    {
-        return TopEdgeConnections.Count > 0;
-    }
-    
-    public bool HasRightEdgeConnection()
-    {
-        return RightEdgeConnections.Count > 0;
-    }
-    
-    public bool HasBottomEdgeConnection()
-    {
-        return BottomEdgeConnections.Count > 0;
-    }
-    
-    public bool HasLeftEdgeConnection()
-    {
-        return LeftEdgeConnections.Count > 0;
-    }
+    public bool HasTopEdgeConnection => TopEdgeConnections.Count > 0;
+
+    public bool HasRightEdgeConnection => RightEdgeConnections.Count > 0;
+
+    public bool HasBottomEdgeConnection => BottomEdgeConnections.Count > 0;
+
+    public bool HasLeftEdgeConnection => LeftEdgeConnections.Count > 0;
 }

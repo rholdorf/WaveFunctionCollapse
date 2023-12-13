@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using WaveFunctionCollapse.Tiles;
@@ -41,7 +40,7 @@ public class FloodFill
 
         var tile = _uniqueTiles[cell.Index];
 
-        if (cell.CanConnectTop && tile.HasTopEdgeConnection())
+        if (cell.CanConnectTop && tile.HasTopEdgeConnection)
         {
             var topCell = cell.TopCell;
             if (!topCell.Collapsed)
@@ -54,7 +53,7 @@ public class FloodFill
             }
         }
 
-        if (cell.CanConnectRight && tile.HasRightEdgeConnection())
+        if (cell.CanConnectRight && tile.HasRightEdgeConnection)
         {
             var rightCell = cell.RightCell;
             if (!rightCell.Collapsed)
@@ -67,7 +66,7 @@ public class FloodFill
             }
         }
 
-        if (cell.CanConnectBottom && tile.HasBottomEdgeConnection())
+        if (cell.CanConnectBottom && tile.HasBottomEdgeConnection)
         {
             var bottomCell = cell.BottomCell;
             if (!bottomCell.Collapsed)
@@ -80,7 +79,7 @@ public class FloodFill
             }
         }
 
-        if (cell.CanConnectLeft && tile.HasLeftEdgeConnection())
+        if (cell.CanConnectLeft && tile.HasLeftEdgeConnection)
         {
             var leftCell = cell.LeftCell;
             if (!leftCell.Collapsed)
