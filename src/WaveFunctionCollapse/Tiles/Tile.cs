@@ -20,6 +20,17 @@ public class Tile
     public List<int> BottomEdgeConnections { get; } = new();
     public List<int> LeftEdgeConnections { get; } = new();
 
+    public List<int> GetEdgeConnections(Position position)
+    {
+        return position switch
+        {
+            Position.Top => TopEdgeConnections,
+            Position.Right => RightEdgeConnections,
+            Position.Bottom => BottomEdgeConnections,
+            _ => LeftEdgeConnections
+        };
+    }
+
     public bool HasTopEdgeConnection => TopEdgeConnections.Count > 0;
 
     public bool HasRightEdgeConnection => RightEdgeConnections.Count > 0;
@@ -27,4 +38,14 @@ public class Tile
     public bool HasBottomEdgeConnection => BottomEdgeConnections.Count > 0;
 
     public bool HasLeftEdgeConnection => LeftEdgeConnections.Count > 0;
+
+    public bool IsTopLeftCorner => !HasTopEdgeConnection && !HasLeftEdgeConnection;
+    public bool IsTopRightCorner => !HasTopEdgeConnection && !HasRightEdgeConnection;
+    public bool IsTopRow => !HasTopEdgeConnection;
+    public bool IsBottomRow => !HasBottomEdgeConnection;
+    public bool IsBottomLeftCorner => !HasBottomEdgeConnection && !HasLeftEdgeConnection;
+    public bool IsBottomRightCorner => !HasBottomEdgeConnection && !HasRightEdgeConnection;
+    public bool IsLeftColumn => !HasLeftEdgeConnection;
+    public bool IsRightColumn => !HasRightEdgeConnection;
+    public bool IsMiddle => HasTopEdgeConnection && HasRightEdgeConnection && HasBottomEdgeConnection && HasLeftEdgeConnection;
 }

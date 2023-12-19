@@ -31,11 +31,7 @@ public class FloodFill
         
         if (!cell.Collapsed)
         {
-            var index = _random.Next(cell.Candidates.Count);
-            cell.Index = cell.Candidates.ElementAt(index);
-            cell.Collapsed = true;
-            cell.Candidates.Clear();
-            Debug.WriteLine($"Collapsed {cell.X}, {cell.Y} to {cell.Index}");
+            cell.Collapse();
         }
 
         var tile = _uniqueTiles[cell.Index];
@@ -98,4 +94,3 @@ public class FloodFill
         if (cell.CanConnectLeft && !cell.LeftCell.Collapsed) CollapseRecursively(cell.LeftCell); // Left
     }
 }
-

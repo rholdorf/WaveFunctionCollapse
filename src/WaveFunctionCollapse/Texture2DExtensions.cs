@@ -29,10 +29,10 @@ public static class Texture2DExtensions
         return ret;
     }    
     
-    public static (Tile[], CellCollection) FindUniqueTiles(this Texture2D texture, Rectangle[][] tileMap, int widthInCells, int heightInCells)
+    public static CellCollection FindUniqueTiles(this Texture2D texture, Rectangle[][] tileMap, int widthInCells, int heightInCells, Random random)
     {
         var uniqueTiles = new List<Tile>();
-        var cellMap = new CellCollection(widthInCells, heightInCells);
+        var cellMap = new CellCollection(widthInCells, heightInCells, uniqueTiles, random);
         var uniqueTilesColorData = new List<Color[]>();
 
         for (var y = 0; y < heightInCells; y++)
@@ -58,9 +58,9 @@ public static class Texture2DExtensions
         }
 
         var ret = uniqueTiles.ToArray();
-        cellMap.SetUniqueTiles(ret);
+        cellMap.SetUniqueTiles(uniqueTiles);
         Console.WriteLine($"{texture.Name} unique tiles: {ret.Length}");
-        return (ret, cellMap);
+        return cellMap;
     }
     
     private static int Find(IReadOnlyList<Color> tileData, IReadOnlyList<Color[]> uniqueTiles)

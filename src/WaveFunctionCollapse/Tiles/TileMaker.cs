@@ -20,7 +20,8 @@ public class TileMaker
         var heightInCells = _texture.Height / tileHeight;
         _rectanglesMap = texture.MapRectangles(tileWidth, tileHeight);
         
-        (_uniqueTiles, _cellMap2) = texture.FindUniqueTiles(_rectanglesMap, widthInCells, heightInCells);
+        _cellMap2 = texture.FindUniqueTiles(_rectanglesMap, widthInCells, heightInCells, _random);
+        _uniqueTiles = _cellMap2.UniqueTiles.ToArray();
         Learn();
         Collapse();
     }
@@ -142,7 +143,7 @@ public class TileMaker
     {
         var x = _random.Next(_cellMap2.Width);
         var y = _random.Next(_cellMap2.Height);
-        FloodFill floodFill = new(_cellMap2, _uniqueTiles, _random);
-        floodFill.Fill(x, y);
+        BorderInFill borderInFill = new(_cellMap2, _uniqueTiles, _random);
+        borderInFill.Fill(x, y);
     }
 }
