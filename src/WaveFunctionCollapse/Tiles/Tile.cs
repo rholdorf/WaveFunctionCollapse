@@ -15,37 +15,29 @@ public class Tile
         Index = index;
     }
 
-    public List<int> TopEdgeConnections { get; } = new();
-    public List<int> RightEdgeConnections { get; } = new();
-    public List<int> BottomEdgeConnections { get; } = new();
-    public List<int> LeftEdgeConnections { get; } = new();
+    public List<int> TopConnections { get; } = new();
+    public List<int> RightConnections { get; } = new();
+    public List<int> BottomConnections { get; } = new();
+    public List<int> LeftConnections { get; } = new();
 
-    public List<int> GetEdgeConnections(Position position)
+    public List<int> GetConnections(Position position)
     {
         return position switch
         {
-            Position.Top => TopEdgeConnections,
-            Position.Right => RightEdgeConnections,
-            Position.Bottom => BottomEdgeConnections,
-            _ => LeftEdgeConnections
+            Position.Top => TopConnections,
+            Position.Right => RightConnections,
+            Position.Bottom => BottomConnections,
+            _ => LeftConnections
         };
     }
 
-    public bool HasTopEdgeConnection => TopEdgeConnections.Count > 0;
+    public bool HasTopConnection => TopConnections.Count > 0;
 
-    public bool HasRightEdgeConnection => RightEdgeConnections.Count > 0;
+    public bool HasRightConnection => RightConnections.Count > 0;
 
-    public bool HasBottomEdgeConnection => BottomEdgeConnections.Count > 0;
+    public bool HasBottomConnection => BottomConnections.Count > 0;
 
-    public bool HasLeftEdgeConnection => LeftEdgeConnections.Count > 0;
+    public bool HasLeftConnection => LeftConnections.Count > 0;
 
-    public bool IsTopLeftCorner => !HasTopEdgeConnection && !HasLeftEdgeConnection;
-    public bool IsTopRightCorner => !HasTopEdgeConnection && !HasRightEdgeConnection;
-    public bool IsTopRow => !HasTopEdgeConnection;
-    public bool IsBottomRow => !HasBottomEdgeConnection;
-    public bool IsBottomLeftCorner => !HasBottomEdgeConnection && !HasLeftEdgeConnection;
-    public bool IsBottomRightCorner => !HasBottomEdgeConnection && !HasRightEdgeConnection;
-    public bool IsLeftColumn => !HasLeftEdgeConnection;
-    public bool IsRightColumn => !HasRightEdgeConnection;
-    public bool IsMiddle => HasTopEdgeConnection && HasRightEdgeConnection && HasBottomEdgeConnection && HasLeftEdgeConnection;
+    public bool IsMiddle => HasTopConnection && HasRightConnection && HasBottomConnection && HasLeftConnection;
 }

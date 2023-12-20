@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using WaveFunctionCollapse.Tiles;
 
@@ -9,23 +8,17 @@ public class CellCollection
     public Cell[][] Cells { get; private set; }
     public int Width { get; private set; }
     public int Height { get; private set; }
-    public Random Random;
-    public List<Tile> UniqueTiles;
+
+    public readonly List<Tile> TileSet;
     
-    public CellCollection(int width, int height, List<Tile> uniqueTiles, Random random)
+    public CellCollection(int width, int height, List<Tile> tileSet)
     {
-        Random = random;
-        UniqueTiles = uniqueTiles;
-        Initialize(width, height);
-        SetUniqueTiles(uniqueTiles);
-    }
-    
-    public CellCollection(int width, int height)
-    {
-        Initialize(width, height);
+        TileSet = tileSet;
+        SetBounderies(width, height);
+        SetTilesInitialEntropy(tileSet);
     }
 
-    private void Initialize(int width, int height)
+    private void SetBounderies(int width, int height)
     {
         Width = width;
         Height = height;
@@ -51,17 +44,17 @@ public class CellCollection
         }
     }
 
-    public void SetUniqueTiles(List<Tile> uniqueTiles)
+    public void SetTilesInitialEntropy(List<Tile> tiles)
     {
-        var candidates = new HashSet<int>();
-        for(var i = 0; i < uniqueTiles.Count; i++)
-            candidates.Add(i);
+        var initialEntropy = new HashSet<int>();
+        for(var i = 0; i < tiles.Count; i++)
+            initialEntropy.Add(tiles[i].Index);
         
         for(var x = 0; x < Width; x++)
         {
             for(var y = 0; y < Height; y++)
             {
-                Cells[x][y].Candidates.UnionWith(candidates);
+                Cells[x][y].SetInitialEntropy(initialEntropy);
             }
         }        
     }

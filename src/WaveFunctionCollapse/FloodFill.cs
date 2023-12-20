@@ -26,7 +26,7 @@ public class FloodFill
 
     private void CollapseRecursively(Cell cell)
     {
-        if(cell.Collapsed || cell.Candidates.Count == 0)
+        if(cell.Collapsed || cell.Entropy.Count == 0)
             return;
         
         if (!cell.Collapsed)
@@ -34,54 +34,54 @@ public class FloodFill
             cell.Collapse();
         }
 
-        var tile = _uniqueTiles[cell.Index];
+        var tile = _uniqueTiles[cell.TileIndex];
 
-        if (cell.CanConnectTop && tile.HasTopEdgeConnection)
+        if (cell.CanConnectTop && tile.HasTopConnection)
         {
             var topCell = cell.TopCell;
             if (!topCell.Collapsed)
             {
-                topCell.Candidates.RemoveWhere(o => !tile.TopEdgeConnections.Contains(o));
-                if(topCell.Candidates.Count == 1)
+                topCell.Entropy.RemoveWhere(o => !tile.TopConnections.Contains(o));
+                if(topCell.Entropy.Count == 1)
                 {
                     CollapseRecursively(topCell);
                 }
             }
         }
 
-        if (cell.CanConnectRight && tile.HasRightEdgeConnection)
+        if (cell.CanConnectRight && tile.HasRightConnection)
         {
             var rightCell = cell.RightCell;
             if (!rightCell.Collapsed)
             {
-                rightCell.Candidates.RemoveWhere(o => !tile.RightEdgeConnections.Contains(o));
-                if(rightCell.Candidates.Count == 1)
+                rightCell.Entropy.RemoveWhere(o => !tile.RightConnections.Contains(o));
+                if(rightCell.Entropy.Count == 1)
                 {
                     CollapseRecursively(rightCell);
                 }
             }
         }
 
-        if (cell.CanConnectBottom && tile.HasBottomEdgeConnection)
+        if (cell.CanConnectBottom && tile.HasBottomConnection)
         {
             var bottomCell = cell.BottomCell;
             if (!bottomCell.Collapsed)
             {
-                bottomCell.Candidates.RemoveWhere(o => !tile.BottomEdgeConnections.Contains(o));
-                if(bottomCell.Candidates.Count == 1)
+                bottomCell.Entropy.RemoveWhere(o => !tile.BottomConnections.Contains(o));
+                if(bottomCell.Entropy.Count == 1)
                 {
                     CollapseRecursively(bottomCell);
                 }
             }
         }
 
-        if (cell.CanConnectLeft && tile.HasLeftEdgeConnection)
+        if (cell.CanConnectLeft && tile.HasLeftConnection)
         {
             var leftCell = cell.LeftCell;
             if (!leftCell.Collapsed)
             {
-                leftCell.Candidates.RemoveWhere(o => !tile.LeftEdgeConnections.Contains(o));
-                if(leftCell.Candidates.Count == 1)
+                leftCell.Entropy.RemoveWhere(o => !tile.LeftConnections.Contains(o));
+                if(leftCell.Entropy.Count == 1)
                 {
                     CollapseRecursively(leftCell);
                 }
