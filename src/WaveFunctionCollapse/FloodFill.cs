@@ -36,12 +36,12 @@ public class FloodFill
 
         var tile = _uniqueTiles[cell.TileIndex];
 
-        if (cell.CanConnectTop && tile.HasTopConnection)
+        if (cell.CanConnectTop && tile.HasTopCompatibleTileIndices)
         {
             var topCell = cell.TopCell;
             if (!topCell.Collapsed)
             {
-                topCell.Entropy.RemoveWhere(o => !tile.TopConnections.Contains(o));
+                topCell.Entropy.RemoveWhere(o => !tile.TopCompatibleTileIndices.Contains(o));
                 if(topCell.Entropy.Count == 1)
                 {
                     CollapseRecursively(topCell);
@@ -49,12 +49,12 @@ public class FloodFill
             }
         }
 
-        if (cell.CanConnectRight && tile.HasRightConnection)
+        if (cell.CanConnectRight && tile.HasRightCompatibleTileIndices)
         {
             var rightCell = cell.RightCell;
             if (!rightCell.Collapsed)
             {
-                rightCell.Entropy.RemoveWhere(o => !tile.RightConnections.Contains(o));
+                rightCell.Entropy.RemoveWhere(o => !tile.RightCompatibleTileIndices.Contains(o));
                 if(rightCell.Entropy.Count == 1)
                 {
                     CollapseRecursively(rightCell);
@@ -62,12 +62,12 @@ public class FloodFill
             }
         }
 
-        if (cell.CanConnectBottom && tile.HasBottomConnection)
+        if (cell.CanConnectBottom && tile.HasBottomCompatibleTileIndices)
         {
             var bottomCell = cell.BottomCell;
             if (!bottomCell.Collapsed)
             {
-                bottomCell.Entropy.RemoveWhere(o => !tile.BottomConnections.Contains(o));
+                bottomCell.Entropy.RemoveWhere(o => !tile.BottomCompatibleTileIndices.Contains(o));
                 if(bottomCell.Entropy.Count == 1)
                 {
                     CollapseRecursively(bottomCell);
@@ -75,12 +75,12 @@ public class FloodFill
             }
         }
 
-        if (cell.CanConnectLeft && tile.HasLeftConnection)
+        if (cell.CanConnectLeft && tile.HasLeftCompatibleTileIndices)
         {
             var leftCell = cell.LeftCell;
             if (!leftCell.Collapsed)
             {
-                leftCell.Entropy.RemoveWhere(o => !tile.LeftConnections.Contains(o));
+                leftCell.Entropy.RemoveWhere(o => !tile.LeftCompatibleTileIndices.Contains(o));
                 if(leftCell.Entropy.Count == 1)
                 {
                     CollapseRecursively(leftCell);

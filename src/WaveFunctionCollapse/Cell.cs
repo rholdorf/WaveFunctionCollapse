@@ -53,7 +53,7 @@ public class Cell
     public void DecreaseEntropy(int tileIndex, Position position)
     {
         var basedOnTile = Parent.TileSet[tileIndex];
-        Entropy.IntersectWith(basedOnTile.GetConnections(position));
+        Entropy.IntersectWith(basedOnTile.GetCompatibleTileIndices(position));
         // if (Entropy.Count == 1)
         // {
         //     Collapse();
