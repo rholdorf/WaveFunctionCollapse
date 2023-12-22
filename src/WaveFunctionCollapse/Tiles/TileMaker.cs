@@ -29,8 +29,8 @@ public class TileMaker
 
     public void Draw(SpriteBatch spriteBatch, Rectangle destinationRectangle)
     {
-        DrawCellMap(spriteBatch, destinationRectangle);
-        //DrawTiles(spriteBatch, destinationRectangle);
+        //DrawCellMap(spriteBatch, destinationRectangle);
+        DrawTiles(spriteBatch, destinationRectangle);
     }
     
     private void RemoveBorderTiles()
@@ -110,6 +110,9 @@ public class TileMaker
             }
 
             spriteBatch.Draw(_texture, middleMiddleRect, tile.SourceRectangle, Color.White);
+            var text = tile.Index.ToString();
+            var origin = Game1.Font.MeasureString(text);
+            spriteBatch.DrawString(Game1.Font, text, new Vector2(middleMiddleRect.X, middleMiddleRect.Y), Color.White, 0, origin, 0.6f, SpriteEffects.None, 0.5f);
 
             if (tile.HasRightCompatibleTileIndices)
             {
@@ -140,8 +143,8 @@ public class TileMaker
             for (var x = 0; x < _cellMap2.Width; x++)
             {
                 var cell = _cellMap2.Cells[x][y];
-                if(!cell.IsMiddle)
-                    continue;
+                // if(!cell.IsMiddle)
+                //     continue;
                 
                 var tile = _uniqueTiles[cell.TileIndex]; 
 

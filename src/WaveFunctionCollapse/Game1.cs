@@ -10,6 +10,8 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private TileMaker _tiles;
+    
+    public static SpriteFont Font { get; private set; }
 
     public Game1()
     {
@@ -22,6 +24,7 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         _tiles = new TileMaker(Content.Load<Texture2D>("pacman_sample_screen"), 8, 8);
+        Font = Content.Load<SpriteFont>("ArialFont");
     }
 
     protected override void Update(GameTime gameTime)
