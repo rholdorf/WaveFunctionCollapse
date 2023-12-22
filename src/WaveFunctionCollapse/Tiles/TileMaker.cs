@@ -13,6 +13,12 @@ public class TileMaker
     private readonly List<Tile> _uniqueTiles;
     private readonly CellCollection _cellMap2;
 
+    private readonly List<int> _mazeTiles = new()
+    {
+        0, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 39, 40, 43, 44,
+        64, 65, 76, 79, 80, 81
+    };
+
     public TileMaker(Texture2D texture, int tileWidth, int tileHeight)
     {
         _texture = texture;
@@ -24,15 +30,28 @@ public class TileMaker
         _uniqueTiles = _cellMap2.TileSet;
         LearnAccordingToTheTexture();
         //RemoveBorderTiles();
+        RemoveNonMaze();
         Collapse();
     }
 
     public void Draw(SpriteBatch spriteBatch, Rectangle destinationRectangle)
     {
-        //DrawCellMap(spriteBatch, destinationRectangle);
-        DrawTiles(spriteBatch, destinationRectangle);
+        DrawCellMap(spriteBatch, destinationRectangle);
+        //DrawTiles(spriteBatch, destinationRectangle);
     }
-    
+
+    private void RemoveNonMaze()
+    {
+        for (var i = 0; i < _uniqueTiles.Count; i++)
+        {
+            var tile = _uniqueTiles[i];
+            tile.TopCompatibleTileIndices.RemoveAll(o => !_mazeTiles.Contains(o));
+            tile.RightCompatibleTileIndices.RemoveAll(o => !_mazeTiles.Contains(o));
+            tile.BottomCompatibleTileIndices.RemoveAll(o => !_mazeTiles.Contains(o));
+            tile.LeftCompatibleTileIndices.RemoveAll(o => !_mazeTiles.Contains(o));
+        }
+    }
+
     private void RemoveBorderTiles()
     {
         var borderTiles = _uniqueTiles.Where(o => !o.HasTopCompatibleTileIndices || !o.HasRightCompatibleTileIndices || !o.HasBottomCompatibleTileIndices || !o.HasLeftCompatibleTileIndices);
@@ -91,6 +110,9 @@ public class TileMaker
         for (var i = 0; i < _uniqueTiles.Count; i++)
         {
             var tile = _uniqueTiles[i];
+            if(!_mazeTiles.Contains(tile.Index))
+                continue;
+            
             var middleTopRect = new Rectangle(offsetRectangle.X + cellWidth, offsetRectangle.Y, cellWidth, cellHeight);
             var leftMiddleRect = new Rectangle(offsetRectangle.X, offsetRectangle.Y + cellHeight, cellWidth, cellHeight);
             var middleMiddleRect = new Rectangle(offsetRectangle.X + cellWidth, offsetRectangle.Y + cellHeight, cellWidth, cellHeight);
@@ -119,7 +141,7 @@ public class TileMaker
                 var rightTile = _uniqueTiles[tile.RightCompatibleTileIndices.First()];
                 spriteBatch.Draw(_texture, rightMiddleRect, rightTile.SourceRectangle, Color.White);
             }
-
+            
             if (tile.HasBottomCompatibleTileIndices)
             {
                 var bottomTile = _uniqueTiles[tile.BottomCompatibleTileIndices.First()];
